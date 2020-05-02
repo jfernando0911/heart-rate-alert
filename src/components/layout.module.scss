@@ -1,4 +1,20 @@
+
+$cr1: black;
+$cr2 : #5F5E5E;
+$cr3: white;
+
 .heartEmoji{
     font-size: 50px;
-    color: grey;
+    color: red;
+}
+
+.darkMode{
+    background-color: $cr1;
+    color: $cr2;
+
+}
+
+.lightMode{
+    background-color: $cr3;
+    color: $cr2;
 }

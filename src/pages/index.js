@@ -1,10 +1,16 @@
-import React from "react"
+import React, {useState} from "react"
 import Layout from '../components/layout';
+// import styles from '../pages/index.module.scss'
+import Header from '../components/header';
 
 export default () => {
+
+   
+
+
     if("bluetooth" in navigator){
         return (
-        
+            // Detect when someone inputs data, before showing up the heartbeats and rages.
             <div>
                 <Layout />
             </div>)

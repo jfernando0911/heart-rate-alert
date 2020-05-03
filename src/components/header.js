@@ -1,26 +1,26 @@
-import React, { useState } from 'react';
 
+import React, { useState, useEffect } from 'react';
 
 export default (props) => {
 
+
+
     const [heartRate, setheartRate] = useState(0);
     const [bluetoothMessage, setbluetoothMessage] = useState("");
-    // let getItem = localStorage.getItem();
-    // const [darkMode, setdarkMode] = useState(JSON.parse(localStorage.getItem("darkModeValue")) || false);
+   
 
-    // useEffect(() => {
-    //     localStorage.setItem("darkModeValue", JSON.stringify(darkMode));
-    //     props.saludo(darkMode);
-    //   }, [darkMode]);
 
-    // const changeDarkMode = (event)=>{
-    //     setdarkMode(!darkMode);
-    // }
 
-    // const getValue = ()=>{
-    //     let getItem = JSON.parse(localStorage.getItem("darkModeValue"));
-    //     console.log("Value", getItem);   
-    // }
+    useEffect(() => {
+
+        if (heartRate < 78) {
+            console.log("low");
+        } else {
+            console.log("Mayor")
+        }
+
+    }, [heartRate]);
+
 
 
     async function connectBluetooth() {
@@ -44,7 +44,7 @@ export default (props) => {
             setbluetoothMessage("Getting the heart rate measurement...");
             console.log(characteristic);
             let notifications = await characteristic.startNotifications();
-            if(notifications){
+            if (notifications) {
                 setbluetoothMessage("");
             }
 
@@ -57,8 +57,18 @@ export default (props) => {
 
 
     function handleNotifications(e) {
-        console.log(parseHeartRate(e.currentTarget.value).heartRate);
+        // console.log(parseHeartRate(e.currentTarget.value).heartRate);
         setheartRate(parseHeartRate(e.currentTarget.value).heartRate);
+        // navigator.vibrate(200);
+        if (heartRate < 65) {
+            // setvoice("Lower");
+            // window.speechSyntesis.text(voice);
+            // window.speechSyntesis.speak(speechSyntesis);
+            // msg.text ="lower";
+
+        } else if (heartRate > 65) {
+
+        }
 
     }
 
@@ -104,7 +114,7 @@ export default (props) => {
         <header>
             {/* <p> {darkMode ? "darkMode Enabled": "DarkMode Disabled" } </p>
             <button onClick={changeDarkMode}>ChangeMode</button>
-            <button onClick={getValue}>Get a real value</button> */}
+        <button onClick={getValue}>Get a real value</button> */}
             <h1>Heart Rate Header</h1>
             <button onClick={connectBluetooth}>Bluetooth</button>
             <p style={{ fontSize: 60 }}>{heartRate}</p>

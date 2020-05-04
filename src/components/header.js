@@ -1,5 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import audio2 from '../../static/alert2.mp3';
+import audio1 from '../../static/alert1.mp3';
+import audio3 from '../../static/alert3.mp3';
+import heart from '../heart.svg';
+
 
 export default (props) => {
 
@@ -7,16 +12,37 @@ export default (props) => {
 
     const [heartRate, setheartRate] = useState(0);
     const [bluetoothMessage, setbluetoothMessage] = useState("");
-   
+
+    const audioref1 = useRef();
+    const audioref2 = useRef();
+    const audioref3 = useRef();
+
+    const playThis = () => {
+        audioref1.current.play();
+        navigator.vibrate(200);
+    }
+    const playThis2 = () => {
+        audioref2.current.play();
+    }
+
+
 
 
 
     useEffect(() => {
 
-        if (heartRate < 78) {
+        if (heartRate < 65) {
             console.log("low");
-        } else {
+            audioref1.current.play();
+        }else if(heartRate > 65 && heartRate < 70){
+            console.log("In the middle");
+            audioref3.current.play();
+            
+        } 
+        
+        else if(heartRate > 70) {
             console.log("Mayor")
+            audioref2.current.play();
         }
 
     }, [heartRate]);
@@ -107,7 +133,7 @@ export default (props) => {
         return result;
     }
 
-
+    
 
 
     return (
@@ -115,10 +141,25 @@ export default (props) => {
             {/* <p> {darkMode ? "darkMode Enabled": "DarkMode Disabled" } </p>
             <button onClick={changeDarkMode}>ChangeMode</button>
         <button onClick={getValue}>Get a real value</button> */}
-            <h1>Heart Rate Header</h1>
             <button onClick={connectBluetooth}>Bluetooth</button>
+            <h1>Heart Rate:</h1>
+            
+            <img src={heart}/>
             <p style={{ fontSize: 60 }}>{heartRate}</p>
             <p>{bluetoothMessage}</p>
+
+            <button onClick={playThis2}>Play Alert 1</button>
+            <button onClick={playThis}>Play Alert 2</button>
+            <audio /*controls*/ ref={audioref1}>
+                <source src={audio2} type="audio/mp3" />
+            </audio>
+            <audio /*controls*/ ref={audioref2}>
+                <source src={audio1} type="audio/mp3" />
+            </audio>
+            <audio /*controls*/ ref={audioref3}>
+                <source src={audio3} type="audio/mp3" />
+            </audio>
+
 
         </header>
     );

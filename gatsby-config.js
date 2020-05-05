@@ -9,13 +9,13 @@ module.exports = {
   plugins: ['gatsby-plugin-sass', {
     resolve: `gatsby-plugin-manifest`,
     options: {
-      name: `GatsbyJS`,
-      short_name: `GatsbyJS`,
+      name: `Heart Rate Alert`,
+      short_name: `HRA`,
       start_url: `/`,
       background_color: `#f7f0eb`,
       icon: `src/heart.svg`,
       theme_color: `#a2466c`,
       display: `standalone`,
     },
-  }, 'gatsby-plugin-offline'],
+  }, 'gatsby-plugin-offline', 'gatsby-plugin-react-helmet'],
 }

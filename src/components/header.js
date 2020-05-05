@@ -4,6 +4,7 @@ import audio2 from '../../static/alert2.mp3';
 import audio1 from '../../static/alert1.mp3';
 import audio3 from '../../static/alert3.mp3';
 import heart from '../heart.svg';
+import styles from '../components/header.module.scss'
 
 
 export default (props) => {
@@ -12,18 +13,19 @@ export default (props) => {
 
     const [heartRate, setheartRate] = useState(0);
     const [bluetoothMessage, setbluetoothMessage] = useState("");
+    const [heartState, setheartState] = useState(false);
 
     const audioref1 = useRef();
     const audioref2 = useRef();
     const audioref3 = useRef();
 
-    const playThis = () => {
-        audioref1.current.play();
-        navigator.vibrate(200);
-    }
-    const playThis2 = () => {
-        audioref2.current.play();
-    }
+    // const playThis = () => {
+    //     audioref1.current.play();
+    //     navigator.vibrate(200);
+    // }
+    // const playThis2 = () => {
+    //     audioref2.current.play();
+    // }
 
 
 
@@ -32,17 +34,31 @@ export default (props) => {
     useEffect(() => {
 
         if (heartRate < 65) {
-            console.log("low");
-            audioref1.current.play();
-        }else if(heartRate > 65 && heartRate < 70){
-            console.log("In the middle");
-            audioref3.current.play();
-            
-        } 
-        
-        else if(heartRate > 70) {
+            console.log("low -> Outside");
+            setTimeout(() => {
+                audioref1.current.play();
+                console.log("low -> Inside")
+
+            }, 5000);
+
+        } else if (heartRate > 65 && heartRate < 70) {
+            console.log("In the middle -> Outside");
+            setTimeout(() => {
+                audioref3.current.play();
+                console.log("Im in the middle -> Inside")
+
+            }, 5000);
+
+        }
+
+        else if (heartRate > 70) {
             console.log("Mayor")
-            audioref2.current.play();
+            console.log("Mayor -> Outside");
+            setTimeout(() => {
+                audioref2.current.play();
+                console.log("Mayor -> Inside")
+
+            }, 5000);
         }
 
     }, [heartRate]);
@@ -71,7 +87,8 @@ export default (props) => {
             console.log(characteristic);
             let notifications = await characteristic.startNotifications();
             if (notifications) {
-                setbluetoothMessage("");
+                // setbluetoothMessage("");
+                setheartState(true);
             }
 
             console.log(notifications);
@@ -133,7 +150,7 @@ export default (props) => {
         return result;
     }
 
-    
+
 
 
     return (
@@ -143,20 +160,25 @@ export default (props) => {
         <button onClick={getValue}>Get a real value</button> */}
             <button onClick={connectBluetooth}>Bluetooth</button>
             <h1>Heart Rate:</h1>
-            
-            <img src={heart}/>
+
+            <div className={styles.heartContainer}>
+                <img src={heart} alt="heart" className={heartState?  styles.heart : styles.heartNone } style={{animationDuration:0.1}} />
+            </div>
             <p style={{ fontSize: 60 }}>{heartRate}</p>
             <p>{bluetoothMessage}</p>
 
-            <button onClick={playThis2}>Play Alert 1</button>
-            <button onClick={playThis}>Play Alert 2</button>
+            {/* <button onClick={playThis2}>Play Alert 1</button> */}
+            {/* <button onClick={playThis}>Play Alert 2</button> */}
             <audio /*controls*/ ref={audioref1}>
+                <track kind="captions" />
                 <source src={audio2} type="audio/mp3" />
             </audio>
             <audio /*controls*/ ref={audioref2}>
+                <track kind="captions" />
                 <source src={audio1} type="audio/mp3" />
             </audio>
             <audio /*controls*/ ref={audioref3}>
+                <track kind="captions" />
                 <source src={audio3} type="audio/mp3" />
             </audio>
 

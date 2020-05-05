@@ -3,6 +3,24 @@ $cr1: black;
 $cr2 : #5F5E5E;
 $cr3: white;
 
+
+html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.container{
+    // border: 1px solid black;
+    height: 100vh;
+    width: 100%;
+}
+
+body{
+    margin: 0;
+}
+
 .heartEmoji{
     font-size: 50px;
     color: red;

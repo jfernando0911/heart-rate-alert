@@ -19,17 +19,6 @@ export default (props) => {
     const audioref2 = useRef();
     const audioref3 = useRef();
 
-    // const playThis = () => {
-    //     audioref1.current.play();
-    //     navigator.vibrate(200);
-    // }
-    // const playThis2 = () => {
-    //     audioref2.current.play();
-    // }
-
-
-
-
 
     useEffect(() => {
 
@@ -87,7 +76,7 @@ export default (props) => {
             console.log(characteristic);
             let notifications = await characteristic.startNotifications();
             if (notifications) {
-                // setbluetoothMessage("");
+                setbluetoothMessage("");
                 setheartState(true);
             }
 
@@ -154,12 +143,9 @@ export default (props) => {
 
 
     return (
-        <header>
-            {/* <p> {darkMode ? "darkMode Enabled": "DarkMode Disabled" } </p>
-            <button onClick={changeDarkMode}>ChangeMode</button>
-        <button onClick={getValue}>Get a real value</button> */}
-            <button onClick={connectBluetooth}>Bluetooth</button>
+        <header className={styles.headerContainer}>
             <h1>Heart Rate:</h1>
+            <button onClick={connectBluetooth}>Bluetooth</button>
 
             <div className={styles.heartContainer}>
                 <img src={heart} alt="heart" className={heartState?  styles.heart : styles.heartNone } style={{animationDuration:0.1}} />
@@ -167,8 +153,6 @@ export default (props) => {
             <p style={{ fontSize: 60 }}>{heartRate}</p>
             <p>{bluetoothMessage}</p>
 
-            {/* <button onClick={playThis2}>Play Alert 1</button> */}
-            {/* <button onClick={playThis}>Play Alert 2</button> */}
             <audio /*controls*/ ref={audioref1}>
                 <track kind="captions" />
                 <source src={audio2} type="audio/mp3" />

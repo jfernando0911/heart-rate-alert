@@ -22,7 +22,7 @@ export default (props) => {
 
     useEffect(() => {
 
-        if (heartRate < 65) {
+        if (heartRate < parseInt(props.minHrValue) && heartRate > parseInt(props.minHrValue -2)) {     //menor al minHrRate y mayor a minHrate -2 | heartRate < 136 && heartRate > 134
             console.log("low -> Outside");
             setTimeout(() => {
                 audioref1.current.play();
@@ -30,7 +30,7 @@ export default (props) => {
 
             }, 5000);
 
-        } else if (heartRate > 65 && heartRate < 70) {
+        } else if (heartRate > parseInt(props.minHrValue) && heartRate < props.maxHrValue) { //heartRate > 136 && heartRate < 148
             console.log("In the middle -> Outside");
             setTimeout(() => {
                 audioref3.current.play();
@@ -40,7 +40,7 @@ export default (props) => {
 
         }
 
-        else if (heartRate > 70) {
+        else if (heartRate > parseInt(props.maxHrValue) && heartRate < parseInt(props.maxHrValue + 2)) {                    //heartRate > 148
             console.log("Mayor")
             console.log("Mayor -> Outside");
             setTimeout(() => {
@@ -139,19 +139,28 @@ export default (props) => {
         return result;
     }
 
-
+    // const getProps = () => {    Testing porpuses
+    //     console.log(typeof props.minHrValue);
+    //     const converted = parseInt(props.minHrValue);
+    //     console.log("Converted...", converted);
+    //     console.log(parseInt(props.maxHrValue));
+    //     console.log("Getting min value from parent: ", props.minHrValue);
+    //     console.log("Getting max value from parent:", props.maxHrValue);
+        
+    // }
 
 
     return (
         <header className={styles.headerContainer}>
             <h1>Heart Rate:</h1>
-            <button onClick={connectBluetooth}>Bluetooth</button>
+            <button onClick={connectBluetooth}>Pair heart rate monitor</button>
 
             <div className={styles.heartContainer}>
                 <img src={heart} alt="heart" className={heartState?  styles.heart : styles.heartNone } style={{animationDuration:0.1}} />
             </div>
             <p style={{ fontSize: 60 }}>{heartRate}</p>
             <p>{bluetoothMessage}</p>
+
 
             <audio /*controls*/ ref={audioref1}>
                 <track kind="captions" />
@@ -166,6 +175,7 @@ export default (props) => {
                 <source src={audio3} type="audio/mp3" />
             </audio>
 
+            {/* <button onClick={getProps}>Get props</button> */}
 
         </header>
     );

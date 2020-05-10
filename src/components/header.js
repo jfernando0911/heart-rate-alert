@@ -4,10 +4,84 @@ import audio2 from '../../static/alert2.mp3';
 import audio1 from '../../static/alert1.mp3';
 import audio3 from '../../static/alert3.mp3';
 import heart from '../heart.svg';
-import styles from '../components/header.module.scss'
-
+import styles from '../components/header.module.scss';
 
 export default (props) => {
+
+
+    let db;
+
+
+    const [minHeartRate, setminHeartRate] = useState(30);
+    const [maxHeartRate, setmaxHeartRate] = useState(240);
+
+    useEffect(() => {
+
+        let request = indexedDB.open("heart_rate_database", 1);
+
+
+        request.onupgradeneeded = e => {
+            db = e.target.result;
+            console.log("onupgradeneeded: ", db);
+
+            db.createObjectStore("heartRateLimits", { keyPath: "id", autoIncrement: true });
+
+        }
+
+        request.onsuccess = e => {
+            db = e.target.result;
+
+
+            let transaction = db.transaction("heartRateLimits", "readonly");
+            let store = transaction.objectStore("heartRateLimits");
+            let request = store.get(1);
+            request.onsuccess = e => {
+                let data = e.target.result;
+                console.log("Data getting", data);
+                let heartRateObject = e.target.result;
+                // console.log(heartRateObject);
+                if (heartRateObject === undefined) {
+                    addData()
+                } else {
+                    setminHeartRate(data.minHeartRate);
+                    setmaxHeartRate(data.maxHeartRate);
+                }
+            }
+            request.onerror = e => {
+                console.log("Error", e.target.errorCode);
+            }
+
+
+        }
+
+        request.onerror = e => {
+            console.log(e.target.errorCode);
+        }
+
+
+        const addData = () => {
+            let tx = db.transaction(['heartRateLimits'], 'readwrite');
+            let store = tx.objectStore('heartRateLimits');
+            store.add({ minHeartRate: 136, maxHeartRate: 146 });
+
+            let reqVals = store.get(1);
+
+            reqVals.onsuccess = (e) => {
+                console.log("Here: ", e.target.result);
+                // let data = e.target.result;
+
+            }
+
+            reqVals.onerror = e => {
+                console.log("Error: ", e.errorCode);
+            }
+        }
+
+
+
+    }, []);
+
+
 
 
 
@@ -20,9 +94,9 @@ export default (props) => {
     const audioref3 = useRef();
 
 
-    useEffect(() => {
+    useEffect((minHeartRate, maxHeartRate, heartRate) => {
 
-        if (heartRate < parseInt(props.minHrValue) && heartRate > parseInt(props.minHrValue -2)) {     //menor al minHrRate y mayor a minHrate -2 | heartRate < 136 && heartRate > 134
+        if (heartRate < minHeartRate && heartRate > (minHeartRate - 2)) {     //menor al minHrRate y mayor a minHrate -2 | heartRate < 136 && heartRate > 134
             console.log("low -> Outside");
             setTimeout(() => {
                 audioref1.current.play();
@@ -30,7 +104,7 @@ export default (props) => {
 
             }, 5000);
 
-        } else if (heartRate > parseInt(props.minHrValue) && heartRate < props.maxHrValue) { //heartRate > 136 && heartRate < 148
+        } else if (heartRate > minHeartRate && heartRate < maxHeartRate) { //heartRate > 136 && heartRate < 148
             console.log("In the middle -> Outside");
             setTimeout(() => {
                 audioref3.current.play();
@@ -40,7 +114,7 @@ export default (props) => {
 
         }
 
-        else if (heartRate > parseInt(props.maxHrValue) && heartRate < parseInt(props.maxHrValue + 2)) {                    //heartRate > 148
+        else if (heartRate > maxHeartRate && heartRate < (maxHeartRate + 2)) {                    //heartRate > 148
             console.log("Mayor")
             console.log("Mayor -> Outside");
             setTimeout(() => {
@@ -146,17 +220,17 @@ export default (props) => {
     //     console.log(parseInt(props.maxHrValue));
     //     console.log("Getting min value from parent: ", props.minHrValue);
     //     console.log("Getting max value from parent:", props.maxHrValue);
-        
+
     // }
 
 
     return (
         <header className={styles.headerContainer}>
-            <h1>Heart Rate:</h1>
             <button onClick={connectBluetooth}>Pair heart rate monitor</button>
 
+            <h1>Heart Rate</h1>
             <div className={styles.heartContainer}>
-                <img src={heart} alt="heart" className={heartState?  styles.heart : styles.heartNone } style={{animationDuration:0.1}} />
+                <img src={heart} alt="heart" className={heartState ? styles.heart : styles.heartNone} style={{ animationDuration: 0.1 }} />
             </div>
             <p style={{ fontSize: 60 }}>{heartRate}</p>
             <p>{bluetoothMessage}</p>
@@ -174,6 +248,11 @@ export default (props) => {
                 <track kind="captions" />
                 <source src={audio3} type="audio/mp3" />
             </audio>
+
+            <p>minHR</p>
+            <p>{minHeartRate}</p>
+            <p>maxHR</p>
+            <p>{maxHeartRate}</p>
 
             {/* <button onClick={getProps}>Get props</button> */}
 

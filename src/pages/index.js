@@ -1,6 +1,7 @@
 import React from "react"
 import Layout from '../components/layout'
 import { Helmet } from "react-helmet"
+import Navbar from '../components/navbar';
 
 export default () => {
 
@@ -10,6 +11,8 @@ export default () => {
     return (
         // Detect when someone inputs data, before showing up the heartbeats and rages.
         <div>
+            <Navbar/>
+
             <Helmet>
                 <meta charSet="utf-8" />
                 

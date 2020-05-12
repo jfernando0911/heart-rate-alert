@@ -5,34 +5,38 @@ import audio1 from '../../static/alert1.mp3';
 import audio3 from '../../static/alert3.mp3';
 import heart from '../heart.svg';
 import styles from '../components/header.module.scss';
+import Navbar from '../components/navbar';
 
 export default (props) => {
 
 
-    let db;
-
-
-    const [minHeartRate, setminHeartRate] = useState(30);
-    const [maxHeartRate, setmaxHeartRate] = useState(240);
+    
+    
+    
+    
+    
+    let db = useRef(null);
 
     useEffect(() => {
+       
+
 
         let request = indexedDB.open("heart_rate_database", 1);
 
 
         request.onupgradeneeded = e => {
-            db = e.target.result;
-            console.log("onupgradeneeded: ", db);
+            db.current = e.target.result;
+            console.log("onupgradeneeded: ", db.current);
 
-            db.createObjectStore("heartRateLimits", { keyPath: "id", autoIncrement: true });
+            db.current.createObjectStore("heartRateLimits", { keyPath: "id", autoIncrement: true });
 
         }
 
         request.onsuccess = e => {
-            db = e.target.result;
+            db.current = e.target.result;
 
 
-            let transaction = db.transaction("heartRateLimits", "readonly");
+            let transaction = db.current.transaction("heartRateLimits", "readonly");
             let store = transaction.objectStore("heartRateLimits");
             let request = store.get(1);
             request.onsuccess = e => {
@@ -60,7 +64,7 @@ export default (props) => {
 
 
         const addData = () => {
-            let tx = db.transaction(['heartRateLimits'], 'readwrite');
+            let tx = db.current.transaction(['heartRateLimits'], 'readwrite');
             let store = tx.objectStore('heartRateLimits');
             store.add({ minHeartRate: 136, maxHeartRate: 146 });
 
@@ -84,6 +88,8 @@ export default (props) => {
 
 
 
+    const [minHeartRate, setminHeartRate] = useState(30);
+    const [maxHeartRate, setmaxHeartRate] = useState(240);
 
     const [heartRate, setheartRate] = useState(0);
     const [bluetoothMessage, setbluetoothMessage] = useState("");
@@ -94,7 +100,7 @@ export default (props) => {
     const audioref3 = useRef();
 
 
-    useEffect((minHeartRate, maxHeartRate, heartRate) => {
+    useEffect(() => {
 
         if (heartRate < minHeartRate && heartRate > (minHeartRate - 2)) {     //menor al minHrRate y mayor a minHrate -2 | heartRate < 136 && heartRate > 134
             console.log("low -> Outside");
@@ -124,7 +130,7 @@ export default (props) => {
             }, 5000);
         }
 
-    }, [heartRate]);
+    }, [heartRate, maxHeartRate, minHeartRate]);
 
 
 
@@ -213,19 +219,12 @@ export default (props) => {
         return result;
     }
 
-    // const getProps = () => {    Testing porpuses
-    //     console.log(typeof props.minHrValue);
-    //     const converted = parseInt(props.minHrValue);
-    //     console.log("Converted...", converted);
-    //     console.log(parseInt(props.maxHrValue));
-    //     console.log("Getting min value from parent: ", props.minHrValue);
-    //     console.log("Getting max value from parent:", props.maxHrValue);
-
-    // }
+   
 
 
     return (
         <header className={styles.headerContainer}>
+            <Navbar/>
             <button onClick={connectBluetooth}>Pair heart rate monitor</button>
 
             <h1>Heart Rate</h1>
@@ -248,13 +247,18 @@ export default (props) => {
                 <track kind="captions" />
                 <source src={audio3} type="audio/mp3" />
             </audio>
-
+        <div className={styles.heartRateLimitsContiner}>
+            <div>
             <p>minHR</p>
             <p>{minHeartRate}</p>
+            </div>
+         <div>
             <p>maxHR</p>
             <p>{maxHeartRate}</p>
 
-            {/* <button onClick={getProps}>Get props</button> */}
+         </div>
+        </div>
+
 
         </header>
     );

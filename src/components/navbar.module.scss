@@ -1,0 +1,23 @@
+.headerContainer{
+    height: 60px;
+    // display: block;
+    // margin: 0;
+    width: 100%;    //
+
+    .navContainer{
+        height: 100%;
+        .ulContainer{
+            height: 100%;
+            display: flex;
+            margin: 0;
+            align-items: center;
+            padding-left: 20px;
+            li{
+                padding-left: 20px;
+                list-style-type: none;
+            }
+        }
+    }
+
+    
+}

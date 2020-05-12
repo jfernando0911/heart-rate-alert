@@ -7,27 +7,27 @@ const SettingsContainer = () => {
     let inputMinHeartRateVal = useRef(0);
     let inputMaxHeartRateVal = useRef(0);
 
-    let db;
+    let db = useRef(null);
 
     useEffect(() => {
 
-        
+    
 
    
 
     
-    let request = window.indexedDB.open("heart_rate_database", 1);
+    let request = indexedDB.open("heart_rate_database", 1);
 
     request.onupgradeneeded = e => {
-        db = e.target.result;
-        console.log("onupgradeneeded: ", db);
-        db.createObjectStore("heartRateLimits", { keyPath: "id", autoIncrement: true });
+        db.current = e.target.result;
+        console.log("onupgradeneeded: ", db.current);
+        db.current.createObjectStore("heartRateLimits", { keyPath: "id", autoIncrement: true });
        
     }
 
     request.onsuccess = e => {
-        db = e.target.result;
-        let tx = db.transaction(['heartRateLimits'], 'readonly');
+        db.current = e.target.result;
+        let tx = db.current.transaction(['heartRateLimits'], 'readonly');
         let store = tx.objectStore('heartRateLimits');
         let req = store.get(1);
 
@@ -54,12 +54,12 @@ const SettingsContainer = () => {
     }
 
     request.onerror = e => {
-        db = e.target.result;
+        db.current = e.target.result;
         console.log("Error", e.target.errorCode);
     }
 
     const addData = () => {
-        let tx = db.transaction(['heartRateLimits'], 'readwrite');
+        let tx = db.current.transaction(['heartRateLimits'], 'readwrite');
         let store = tx.objectStore('heartRateLimits');
         store.add({ minHeartRate: 136, maxHeartRate: 146 });
         
@@ -112,7 +112,7 @@ const SettingsContainer = () => {
         console.log(inputMaxHeartRateVal.current.value);
         
 
-        let objectStore = db.transaction(['heartRateLimits'], "readwrite").objectStore('heartRateLimits');
+        let objectStore = db.current.transaction(['heartRateLimits'], "readwrite").objectStore('heartRateLimits');
 
         // Get the to-do list object that has this title as it's title
         let objectStoreTitleRequest = objectStore.get(1);

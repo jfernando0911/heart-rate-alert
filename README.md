@@ -9,3 +9,4 @@ Heart Rate Alert is a PWA (Progressive Web App) using web technologies that trac
 * Gatsby
 * Reactjs
 * SCSS
+* IndexedDB API

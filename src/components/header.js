@@ -7,18 +7,18 @@ import heart from '../heart.svg';
 import styles from '../components/header.module.scss';
 import Navbar from '../components/navbar';
 
-export default (props) => {
+export default () => {
 
 
-    
-    
-    
-    
-    
+
+
+
+
+
     let db = useRef(null);
 
     useEffect(() => {
-       
+
 
 
         let request = indexedDB.open("heart_rate_database", 1);
@@ -95,6 +95,10 @@ export default (props) => {
     const [bluetoothMessage, setbluetoothMessage] = useState("");
     const [heartState, setheartState] = useState(false);
 
+    let notifications = useRef();
+    const [buttonTextContent, setbuttonTextContent] = useState("Pair heart rate monitor");
+
+
     const audioref1 = useRef();
     const audioref2 = useRef();
     const audioref3 = useRef();
@@ -134,13 +138,15 @@ export default (props) => {
 
 
 
-    async function connectBluetooth() {
+    async function connectBluetooth(e) {
         let options = {
             filters: [
                 { services: ['heart_rate'] }
             ]
         }
 
+        if(buttonTextContent === "Pair heart rate monitor"){
+            
         try {
             let device = await navigator.bluetooth.requestDevice(options);
             console.log("Device requested: ", device);
@@ -154,30 +160,30 @@ export default (props) => {
             let characteristic = await service.getCharacteristic("heart_rate_measurement");
             setbluetoothMessage("Getting the heart rate measurement...");
             console.log(characteristic);
-            let notifications = await characteristic.startNotifications();
+            notifications.current = await characteristic.startNotifications();
             if (notifications) {
                 setbluetoothMessage("");
+                setbuttonTextContent("Stop");
                 setheartState(true);
             }
 
             console.log(notifications);
-            notifications.addEventListener("characteristicvaluechanged", handleNotifications);
+            notifications.current.addEventListener("characteristicvaluechanged", handleNotifications);
         } catch (error) {
             console.log("This error: ", error);
         }
+        }else{
+            onStopButtonClick();
+        }
+
+       
+
     }
 
 
     function handleNotifications(e) {
-        // console.log(parseHeartRate(e.currentTarget.value).heartRate);
         setheartRate(parseHeartRate(e.currentTarget.value).heartRate);
-        // navigator.vibrate(200);
         if (heartRate < 65) {
-            // setvoice("Lower");
-            // window.speechSyntesis.text(voice);
-            // window.speechSyntesis.speak(speechSyntesis);
-            // msg.text ="lower";
-
         } else if (heartRate > 65) {
 
         }
@@ -185,6 +191,21 @@ export default (props) => {
     }
 
 
+    async function onStopButtonClick() {
+        if (notifications.current) {
+            try {
+                await notifications.current.stopNotifications();
+                console.log('> Notifications stopped');
+                notifications.current.removeEventListener('characteristicvaluechanged',
+                    handleNotifications);
+                setheartRate(0);
+                setheartState(false);
+                setbuttonTextContent("Pair heart rate monitor");
+            } catch (error) {
+                console.log('Argh! ' + error);
+            }
+        }
+    }
 
     function parseHeartRate(data) {
         const flags = data.getUint8(0);
@@ -219,13 +240,14 @@ export default (props) => {
         return result;
     }
 
-   
+
 
 
     return (
         <header className={styles.headerContainer}>
-            <Navbar/>
-            <button onClick={connectBluetooth}>Pair heart rate monitor</button>
+            <Navbar />
+            <button onClick={connectBluetooth}>{buttonTextContent}</button>
+
 
             <h1>Heart Rate</h1>
             <div className={styles.heartContainer}>
@@ -247,17 +269,17 @@ export default (props) => {
                 <track kind="captions" />
                 <source src={audio3} type="audio/mp3" />
             </audio>
-        <div className={styles.heartRateLimitsContiner}>
-            <div>
-            <p>minHR</p>
-            <p>{minHeartRate}</p>
-            </div>
-         <div>
-            <p>maxHR</p>
-            <p>{maxHeartRate}</p>
+            <div className={styles.heartRateLimitsContiner}>
+                <div>
+                    <p>minHR</p>
+                    <p>{minHeartRate}</p>
+                </div>
+                <div>
+                    <p>maxHR</p>
+                    <p>{maxHeartRate}</p>
 
-         </div>
-        </div>
+                </div>
+            </div>
 
 
         </header>

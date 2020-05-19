@@ -1,6 +1,6 @@
 {
   "homepage": "https://jfernando0911.github.io/heart-rate-alert/",
-  "name": "Heart Rate Alert PWA",
+  "name": "heart-rate-alert",
   "private": true,
   "description": "A simplified bare-bones starter for Gatsby",
   "version": "0.1.0",

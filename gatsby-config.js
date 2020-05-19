@@ -4,7 +4,7 @@
  * See: https://www.gatsbyjs.org/docs/gatsby-config/
  */
 
-module.exports = {
+module.exports = {pathPrefix: "/heart-rate-alert",
   /* Your site config here */
   plugins: ['gatsby-plugin-sass', {
     resolve: `gatsby-plugin-manifest`,

@@ -246,7 +246,7 @@ export default () => {
     return (
         <header className={styles.headerContainer}>
             <Navbar />
-            <button onClick={connectBluetooth}>{buttonTextContent}</button>
+            <button onClick={connectBluetooth} className={styles.pairStopButton}>{buttonTextContent}</button>
 
 
             <h1>Heart Rate</h1>

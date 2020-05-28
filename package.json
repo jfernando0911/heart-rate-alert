@@ -2,8 +2,8 @@
   "homepage": "https://jfernando0911.github.io/heart-rate-alert/",
   "name": "heart-rate-alert",
   "private": true,
-  "description": "A simplified bare-bones starter for Gatsby",
-  "version": "0.1.0",
+  "description": "Heart Rate Alert is a PWA (Progressive Web App) using web technologies that tracks a treshhold of your heart rate. You can set your settings to alert you with a sound if your heart rate is below, in or upper the ranges you specify. For example, you can set your max treshhold to be 146 and your min treshhold to be 136 making your range to be between 146 and 136, and it will make an alert sound if you are below 136, upper 146, it will tell you if you are in between, also.",
+  "version": "0.3.8",
   "license": "MIT",
   "scripts": {
     "deploy": "gatsby build --prefix-paths && gh-pages -d public",

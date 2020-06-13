@@ -6,6 +6,8 @@ import audio3 from '../../static/alert3.mp3';
 import heart from '../heart.svg';
 import styles from '../components/header.module.scss';
 import Navbar from '../components/navbar';
+import MaxMinRates from '../components/MaxMinRates';
+
 
 export default () => {
 
@@ -269,17 +271,8 @@ export default () => {
                 <track kind="captions" />
                 <source src={audio3} type="audio/mp3" />
             </audio>
-            <div className={styles.heartRateLimitsContiner}>
-                <div>
-                    <p>minHR</p>
-                    <p>{minHeartRate}</p>
-                </div>
-                <div>
-                    <p>maxHR</p>
-                    <p>{maxHeartRate}</p>
 
-                </div>
-            </div>
+            <MaxMinRates minHRStorageSetting={minHeartRate} maxHRStorageSetting={maxHeartRate}/>
 
 
         </header>

@@ -10,3 +10,22 @@ Heart Rate Alert is a PWA (Progressive Web App) using web technologies that trac
 * Reactjs
 * SCSS
 * IndexedDB API
+
+## Steps to use it
+
+* Be sure your bluetooth is turned on
+* Go to https://jfernando0911.github.io/heart-rate-alert/
+* If you are on windows, be sure to pair your heart rate monitor strap first.
+* Click on pair heart rate monitor
+    *  ![alt text](static/pairing_device.png)
+* A popup menu with the bluetooth devices will show up
+    *  ![alt text](static/selecting_device.png)
+* Once paired it will start tracking your heart
+    *  ![alt text](static/it_will_track_heart_rate.png)
+
+## Compatibility with iOS and Android
+
+* The android version must be greater than 6 (Marshmallow)
+* It is still not compatible with iOS for the moment
+* For more information about the compatibility of the web bluetooth API [a link](https://github.com/WebBluetoothCG/web-bluetooth/blob/master/implementation-status.md) 
+

@@ -27,5 +27,5 @@ Heart Rate Alert is a PWA (Progressive Web App) using web technologies that trac
 
 * The android version must be greater than 6 (Marshmallow)
 * It is still not compatible with iOS for the moment
-* For more information about the compatibility of the web bluetooth API [a link](https://github.com/WebBluetoothCG/web-bluetooth/blob/master/implementation-status.md) 
+* For more information about the compatibility of the [web bluetooth API](https://github.com/WebBluetoothCG/web-bluetooth/blob/master/implementation-status.md) 
 

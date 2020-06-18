@@ -13,8 +13,8 @@ Heart Rate Alert is a PWA (Progressive Web App) using web technologies that trac
 
 ## Devices needed to track your heart rate
 
-![](https://imgur.com/AXTPDtN)
-![](https://imgur.com/a5nBQ3o)
+![](https://i.imgur.com/AXTPDtN.png)
+![](https://i.imgur.com/a5nBQ3o.png)
 
 
 
@@ -30,7 +30,7 @@ Heart Rate Alert is a PWA (Progressive Web App) using web technologies that trac
 * Once paired it will start tracking your heart
     *  ![alt text](static/it_will_track_heart_rate.png)
 
-![](https://giphy.com/gifs/h3VvLHPrjfuB2U91vg)
+![](https://media1.giphy.com/media/h3VvLHPrjfuB2U91vg/giphy.gif)
 
 
 ## Compatibility with iOS and Android

@@ -11,6 +11,13 @@ Heart Rate Alert is a PWA (Progressive Web App) using web technologies that trac
 * SCSS
 * IndexedDB API
 
+## Devices needed to track your heart rate
+
+*  ![](https://imgur.com/AXTPDtN)
+*  ![](https://imgur.com/a5nBQ3o)
+
+
+
 ## Steps to use it
 
 * Be sure your bluetooth is turned on
@@ -22,6 +29,9 @@ Heart Rate Alert is a PWA (Progressive Web App) using web technologies that trac
     *  ![alt text](static/selecting_device.png)
 * Once paired it will start tracking your heart
     *  ![alt text](static/it_will_track_heart_rate.png)
+
+![](https://giphy.com/gifs/h3VvLHPrjfuB2U91vg)
+
 
 ## Compatibility with iOS and Android
 
